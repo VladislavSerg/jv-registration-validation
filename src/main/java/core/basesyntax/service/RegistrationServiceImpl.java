@@ -16,6 +16,14 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new RegistrationException("Login can not be null");
         }
 
+        if (user.getPassword() == null) {
+            throw new RegistrationException("Password can not be null");
+        }
+
+        if (user.getAge() == null) {
+            throw new RegistrationException("Age can not be null");
+        }
+
         if (storageDao.get(user.getLogin()) != null) {
             throw new RegistrationException("duplicated user");
         }
@@ -24,22 +32,14 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new RegistrationException("login must be more then 6 digits");
         }
 
-        if (user.getPassword() == null) {
-            throw new RegistrationException("Password can not be null");
-        }
-
         if (user.getPassword().length() < MIN_PASSWORD) {
             throw new RegistrationException("password must be more then 6 digits");
-        }
-
-        if (user.getAge() == null) {
-            throw new RegistrationException("Age can not be null");
         }
 
         if (user.getAge() < MIN_AGE) {
             throw new RegistrationException("Age must be more then 18");
         }
 
-        return user;
+        return storageDao.add(user);
     }
 }
